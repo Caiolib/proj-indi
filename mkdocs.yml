@@ -1,8 +1,8 @@
 site_name: Entrega
-site_author: João Sarti
-site_url: https://joaopgs4.github.io/api-principal
-repo_url: https://github.com/joaopgs4/api-principal
-repo_name: github/api-principal
+site_author: Caio Liberal
+site_url: https://Caiolib.github.io/api-principal
+repo_url: https://github.com/Caiolib/proj-indi
+repo_name: github/proj-indi
 
 theme:
   name: material
@@ -24,7 +24,7 @@ theme:
 
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
-      scheme: default 
+      scheme: default
       primary: grey
       toggle:
         icon: material/toggle-switch-off-outline
@@ -77,7 +77,7 @@ markdown_extensions:
       line_spans: __span
       pygments_lang_class: true
   - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji 
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.inlinehilite
   - pymdownx.snippets:
@@ -94,7 +94,7 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.tasklist:
-      custom_checkbox: true  
+      custom_checkbox: true
   - footnotes
   - pymdownx.critic
   - pymdownx.caret
@@ -103,7 +103,7 @@ markdown_extensions:
   - pymdownx.tilde
   - pymdownx.blocks.caption
   - tables
-      
+
 plugins:
   - glightbox
   - git-revision-date-localized:
@@ -118,7 +118,7 @@ plugins:
       minify_html: true
   - markdown-exec
   - render_swagger:
-      allow_arbitrary_locations : true
+      allow_arbitrary_locations: true
   - termynal:
       prompt_literal_start:
         - "$"
@@ -134,9 +134,7 @@ extra_javascript:
 nav:
   - Home: index.md
   - Exercicios:
-    - Exercicio 1: ./exercicio1/main.md
-    - Exercicio 2: ./exercicio2/main.md
-    - Exercicio 3: ./exercicio3/main.md
-    - Exercicio 4: ./exercicio4/main.md
-    - Exercicio 5: ./exercicio5/main.md
+      - Exercicio 1: ./exercicio1/main.md
+      - Exercicio 2: ./exercicio2/main.md
+      - Exercicio 3: ./exercicio3/main.md
   - bottlenecks: ./bottlenecks/main.md

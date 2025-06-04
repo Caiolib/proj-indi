@@ -41,20 +41,6 @@ Para reduzir a latência nas requisições à rota `GET /product/{id}`, configur
 
 ---
 
-## 3. Visão Geral dos Dashboards
-
-Abaixo, algumas capturas de tela representando os principais dashboards atualizados:
-
-1. **Dashboard Grafana**  
-   - Mostra uso de CPU, memória e latência das aplicações.
-   - Permite identificar rapidamente picos de requisições e eventuais gargalos de I/O.  
-   ![Dashboard Grafana](../img/grafana.png)
-
-2. **Console Prometheus**  
-   - Exibe métricas coletadas em tempo real, como número de requisições HTTP e tempo médio de resposta.  
-   ![Console Prometheus](../img/prometheus.png)
-
----
 
 ### Resumo das Melhorias
 
@@ -66,7 +52,6 @@ Abaixo, algumas capturas de tela representando os principais dashboards atualiza
 > - Mantenha sempre os manifestos de monitoramento e caching versionados no repositório para facilitar auditorias e deploys futuros.  
 > - Ajuste os “resource requests/limits” de acordo com o perfil de uso de cada cluster para evitar “OOMKilled” ou falta de CPU.
 
----
+## Conclusão
 
-**Autor**: Equipe de DevOps  
-**Data**: 2025-06-04  
+A implementação dessas soluções de monitoramento e caching é fundamental para garantir a performance e a confiabilidade da nossa plataforma. Com o Prometheus e Grafana, temos visibilidade em tempo real do estado do sistema, enquanto o Redis nos permite responder rapidamente às requisições mais frequentes, melhorando a experiência do usuário final.

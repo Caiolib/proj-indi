@@ -1,7 +1,9 @@
 # proj-indi
 
+## Repositorio Principal que controla os microServi
 
-Este é o rep principal. Utilize o clone.sh para clonar os outros reps dentro da pasta /api
+
+#### clone.sh para clonar os outros reps dentro da pasta /api
 
 chmod +x clone.sh
 ./clone.sh
@@ -15,15 +17,17 @@ E assim você tera um docker do jankins pronto, faltando apenas configurar as va
 * clear.sh: limpa o minikube, para fazer um clean-build novamente do projeto
 * deploy.sh: faz um rebuild de todos os dockers no cluster do kubernets
 
-links de todos os repositórios:
-https://github.com/joaopgs4/api-principal  
-https://github.com/joaopgs4/product-service
-https://github.com/joaopgs4/product
-https://github.com/joaopgs4/order-service
-https://github.com/joaopgs4/order
-https://github.com/joaopgs4/gateway-service
-https://github.com/joaopgs4/exchange-service
-https://github.com/joaopgs4/auth-service
-https://github.com/joaopgs4/auth
-https://github.com/joaopgs4/account-service
-https://github.com/joaopgs4/account
+
+
+Repositorios
+
+git clone https://github.com/Caiolib/account.git
+git clone https://github.com/Caiolib/account-service.git
+git clone https://github.com/Caiolib/auth.git
+git clone https://github.com/Caiolib/auth-service.git
+git clone https://github.com/Caiolib/exchange-service.git
+git clone https://github.com/Caiolib/gateway-service.git
+git clone https://github.com/Caiolib/order.git
+git clone https://github.com/Caiolib/order-service.git
+git clone https://github.com/Caiolib/product.git
+git clone https://github.com/Caiolib/product-service.git
