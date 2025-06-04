@@ -1,45 +1,44 @@
-## Objetivo
+# Guia Rápido do Microserviço de Câmbio
 
-Fazer um microserviço de exchange para nossa api que faça requisição para um serviço terceiro utilizando python e fastAPI
+## Rotas da API
+!!! note "Endpoint: GET /exchange/from/to"
+    Utilize este endpoint para consultar a taxa de câmbio entre duas moedas. Por exemplo: `GET /exchange/BRL/USD`.
 
+    === "Exemplo de Resposta"
 
-### Criação dockerfile
-
-Para este dockerfile ser adequado com o fast-api, utilizamos um script uvicorn.sh para iniciar a instancia de python corretamente e um requirements.txt com todas as dependencias necessarias.
-
-=== "dockerfile"
-
-    ``` { .copy .select linenums='1' title="dockerfile" }
-    --8<-- "https://raw.githubusercontent.com/joaopgs4/exchange-service/refs/heads/main/dockerfile"
-    ```
-
-=== "uvicorn.sh"
-
-    ``` { .sh .copy .select linenums='1' title="uvicorn.sh" }
-    --8<-- "https://raw.githubusercontent.com/joaopgs4/exchange-service/refs/heads/main/uvicorn.sh"
-    ```
-
-=== "requirements.txt"
-
-    ``` { .txt .copy .select linenums='1' title="requirements.txt" }
-    --8<-- "https://raw.githubusercontent.com/joaopgs4/exchange-service/refs/heads/main/requirements.txt"
-    ```
-
-### Rotas:
-!!! info "GET /exchange/{from}/{to}"
-
-    Get the current of a coin from one currency to another. E.g. `GET /coin/USD/EUR`.
-
-    === "Response"
-
-        ``` { .json .copy .select linenums='1' }
+        ```json
         {
-            "sell": 0.82,
-            "buy": 0.80,
-            "date": "2021-09-01 14:23:42",
-            "id-account": "0195ae95-5be7-7dd3-b35d-7a7d87c404fb"
+            "venda": 0.85,
+            "compra": 0.83,
+            "horario": "2022-05-21 10:12:00",
+            "conta": "b3c2d1e5-9f8a-7c6b-d4e2-1a3b5c7d8f9g"
         }
         ```
         ```bash
-        Response code: 200 (ok)
+        Código: 200 (sucesso)
         ```
+
+## Configuração com Docker e Dependências
+Para garantir o ambiente ideal do microserviço, empregamos contêineres Docker. O setup inclui um script para iniciar o uvicorn e um arquivo de dependências.
+
+=== "Script uvicorn.sh"
+
+    ```sh
+    --8<-- "https://raw.githubusercontent.com/joaopgs4/exchange-service/refs/heads/main/uvicorn.sh"
+    ```
+
+=== "Arquivo de Requisitos"
+
+    ```txt
+    --8<-- "https://raw.githubusercontent.com/joaopgs4/exchange-service/refs/heads/main/requirements.txt"
+    ```
+
+=== "Dockerfile"
+    
+    ```dockerfile
+    --8<-- "https://raw.githubusercontent.com/joaopgs4/exchange-service/refs/heads/main/dockerfile"
+    ```
+
+## Descrição do Projeto
+Este projeto foi desenvolvido com FastAPI e Python para criar um microserviço de câmbio que integra fontes externas de dados para fornecer conversões de moedas em tempo real. A arquitetura foi pensada para ser leve e escalável, facilitando a manutenção e expansão.
+

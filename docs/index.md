@@ -1,31 +1,32 @@
-# Template de Entrega
+# Projeto API: Solução de Comércio Eletrônico
 
+> Ferramentas de Monitoramento:
+> - Grafana
+> - Prometheus
+> - Redis
 
-???+ info end "Bottlenecks Realizados"
+## Introdução
 
-    * Grafana
-    * Prometeus
-    * Redis
+Este documento apresenta um sistema inovador para e-commerce, implementado como uma API RESTful com Spring Boot. A aplicação é dividida em microserviços responsáveis por gerenciamento de contas, autenticação, produtos, pedidos e integração com um serviço de câmbio. O design enfatiza escalabilidade e modularidade, utilizando Docker e Kubernetes para gerenciamento de contêineres.
 
+## Cronograma das Entregas
 
-# Projeto Individual - API de E-commerce
+As seguintes etapas foram definidas para a conclusão:
+- Exchange API – Finalização prevista: 02/06/2025
+- Product API – Finalização prevista: 02/06/2025
+- Order API – Finalização prevista: 02/06/2025
 
-Este é o projeto individual de e-commerce, que consiste em uma API RESTful desenvolvida com Spring Boot, contendo microserviços para gerenciar contas, autenticação, produtos, pedidos e integração com uma exchange de moedas. A API é projetada para ser escalável e modular, utilizando Docker e Kubernetes para orquestração.
+## Arquitetura do Sistema
 
-## Entregas
+A seguir, um diagrama ilustrativo do fluxo e integração dos serviços:
 
-- [x] Exchange API - Data 02/06/2025
-- [X] Product API - Data 02/06/2025
-- [X] Order API - Data 02/06/2025
-
-## Diagramas
-``` mermaid
+```mermaid
 flowchart LR
-    subgraph api [Trusted Layer]
+    subgraph api [Camada Segura]
         direction TB
         gateway --> account
         gateway --> auth
-        account --> db@{ shape: cyl, label: "Database" }
+        account --> db@{ shape: cyl, label: "Base de Dados" }
         auth --> account
         gateway --> exchange
         gateway --> product
@@ -33,254 +34,252 @@ flowchart LR
         product --> db
         order --> db
         order --> product
-        %% Redis caching for product
-        product e2@==> redis[(Redis Cache)]
+        %% Redis: Cache para product
+        product e2@==> redis[(Cache Redis)]
     end
 
-    %% Monitoring
+    %% Monitoramento
     grafana["Grafana + Prometheus"]
     grafana e3@-.-> gateway
 
-    %% External API and internet
-    exchange --> 3partyapi@{label: "3rd-party API"}
-    internet e1@==>|request| gateway
+    %% Integração externa
+    exchange --> 3partyapi@{label: "API Externa"}
+    internet e1@==>|requisicao| gateway
 
-    %% Animations
+    %% Animações
     e1@{ animate: true }
     e2@{ animate: true }
     e3@{ animate: true }
 
-    %% Styles and links
+    %% Estilo e navegação
     classDef red fill:#fcc
     click order "#order-api" "Order API"
 ```
 
+## Organização do Projeto
 
+A estrutura de diretórios foi pensada para facilitar o desenvolvimento e a manutenção:
 
-## Códigos Gerais
+=== "Visão Geral dos Diretórios"
 
-=== "Estrutura de pastas geral do projeto"
-
-    ``` { .yaml .copy .select linenums='1' title="Diagrama de Pastas" }
-    API/ (Inexistente em um cenario real, apenas para organizar no github e testes locais)
-    ├── exchange-service/ (Microserviço independente)
+    ``` { .yaml .copy .select linenums='1' title="Estrutura de Pastas" }
+    API/ (Apresentação interna para GitHub e testes locais)
+    ├── exchange-service/ (Serviço independente)
     │   ├── app/
     │   │   ├── main.py
     │   │   └── routers.py
     │   ├── Dockerfile
-    ├── gateway-service/ (Microserviço independente)
+    ├── gateway-service/ (Serviço independente)
     │   ├── src/
     │   │   └── main/
     │   │       ├── java/...
     │   │       └── resources/
     │   │           ├── application.yml
-    │   │           └── ...
-    ├── order/ (Dependencia do microserviço)
+    │   │           └── arquivos adicionais
+    ├── order/ (Dependência de serviço)
     │   ├── src/
     │   │   └── main/
     │   │       └── java/...
     │   └── pom.xml
-    ├── order-service/ (Microserviço independente)
+    ├── order-service/ (Serviço independente)
     │   ├── src/
     │   │   └── main/
     │   │       ├── java/...
     │   │       └── resources/
     │   │           ├── application.yml
-    │   │           └── ...
-    ├── product/ (Dependencia do microserviço)
+    │   │           └── arquivos adicionais
+    ├── product/ (Dependência de serviço)
     │   ├── src/
     │   │   └── main/
     │   │       └── java/...
     │   └── pom.xml
-    ├── product-service/ (Microserviço independente)
+    ├── product-service/ (Serviço independente)
     │   ├── src/
     │   │   └── main/
     │   │       ├── java/...
     │   │       └── resources/
     │   │           ├── application.yml
-    │   │           └── ...
+    │   │           └── arquivos adicionais
     │   └── pom.xml
-    ├── account/ (Dependencia do microserviço)
+    ├── account/ (Dependência de serviço)
     │   ├── src/
     │   │   └── main/
     │   │       └── java/...
     │   └── pom.xml
-    ├── account-service/ (Microserviço independente)
+    ├── account-service/ (Serviço independente)
     │   ├── src/
     │   │   └── main/
     │   │       ├── java/...
     │   │       └── resources/
     │   │           ├── application.yml
-    │   │           └── ...
+    │   │           └── arquivos adicionais
     │   └── pom.xml
-    ├── auth/ (Dependencia do microserviço)
+    ├── auth/ (Dependência de serviço)
     │   ├── src/
     │   │   └── main/
     │   │       └── java/...
     │   └── pom.xml
-    ├── auth-service/ (Microserviço independente)
+    ├── auth-service/ (Serviço independente)
     │   ├── src/
     │   │   └── main/
     │   │       ├── java/...
     │   │       └── resources/
     │   │           ├── application.yml
-    │   │           └── ...
+    │   │           └── arquivos adicionais
     │   └── pom.xml
     ```
 
-=== "Docker Compose (para os exercicios 1-3)"
+=== "Configuração com Docker Compose"
 
     ``` { .yaml title="api/compose.yaml" }
     # compose.yaml
     services:
-    db:
+      db:
         image: postgres:latest
         hostname: db
         environment:
-        POSTGRES_DB: ${POSTGRES_DB:-store}
-        POSTGRES_USER: ${POSTGRES_USER:-store}
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-store}
+          POSTGRES_DB: ${POSTGRES_DB:-store}
+          POSTGRES_USER: ${POSTGRES_USER:-store}
+          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-store}
         volumes:
-        - postgres-data:/var/lib/postgresql/data
+          - postgres-data:/var/lib/postgresql/data
         networks:
-        - store-project
+          - store-project
     
-    exchange:
+      exchange:
         build:
-        context: ./exchange-service
-        dockerfile: Dockerfile
+          context: ./exchange-service
+          dockerfile: Dockerfile
         networks:
-        - store-project
-
-    account:
+          - store-project
+    
+      account:
         hostname: account
         build:
-        context: ./account-service
-        dockerfile: Dockerfile
+          context: ./account-service
+          dockerfile: Dockerfile
         environment:
-        DATABASE_HOST: db
-        DATABASE_USER: ${POSTGRES_USER:-store}
-        DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-store}
+          DATABASE_HOST: db
+          DATABASE_USER: ${POSTGRES_USER:-store}
+          DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-store}
         depends_on:
-        - db
+          - db
         networks:
-        - store-project
-
-    auth:
+          - store-project
+    
+      auth:
         hostname: auth
         build:
-        context: ./auth-service
-        dockerfile: Dockerfile
+          context: ./auth-service
+          dockerfile: Dockerfile
         environment:
-        JWT_SECRET_KEY: ${JWT_SECRET_KEY:-yrBBgYlvJQeslzFlgX9MFZccToI2fjRFqualquercoisa}
+          JWT_SECRET_KEY: ${JWT_SECRET_KEY:-yrBBgYlvJQeslzFlgX9MFZccToI2fjRFqualquercoisa}
         networks:
-        - store-project
-
-    gateway:
+          - store-project
+    
+      gateway:
         hostname: gateway
         build:
-        context: ./gateway-service
-        dockerfile: Dockerfile
+          context: ./gateway-service
+          dockerfile: Dockerfile
         environment:
-        - LOGGING_LEVEL_STORE=${LOGGING_LEVEL_STORE:-debug}
+          - LOGGING_LEVEL_STORE=${LOGGING_LEVEL_STORE:-debug}
         ports:
-        - 8080:8080
+          - 8080:8080
         depends_on:
-        - account
-        - auth
-        - product
-        - order
-        - exchange
+          - account
+          - auth
+          - product
+          - order
+          - exchange
         networks:
-        - store-project
-
-    product:
+          - store-project
+    
+      product:
         hostname: product
         build:
-        context: ./product-service
-        dockerfile: Dockerfile
+          context: ./product-service
+          dockerfile: Dockerfile
         environment:
-        DATABASE_HOST: db
-        DATABASE_USER: ${POSTGRES_USER:-store}
-        DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-store}
-        REDIS_HOST: redis
+          DATABASE_HOST: db
+          DATABASE_USER: ${POSTGRES_USER:-store}
+          DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-store}
+          REDIS_HOST: redis
         depends_on:
-        - db
-        - redis
+          - db
+          - redis
         networks:
-        - store-project
-
-    order:
+          - store-project
+    
+      order:
         hostname: order
         build:
-        context: ./order-service
-        dockerfile: Dockerfile
+          context: ./order-service
+          dockerfile: Dockerfile
         environment:
-        DATABASE_HOST: db
-        DATABASE_USER: ${POSTGRES_USER:-store}
-        DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-store}
+          DATABASE_HOST: db
+          DATABASE_USER: ${POSTGRES_USER:-store}
+          DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-store}
         depends_on:
-        - db
+          - db
         networks:
-        - store-project
-
-    prometheus:
+          - store-project
+    
+      prometheus:
         image: prom/prometheus:latest
         hostname: prometheus
         ports:
-        - 9090:9090
+          - 9090:9090
         volumes:
-        - prometheus-config:/etc/prometheus
+          - prometheus-config:/etc/prometheus
         networks:
-        - store-project
-
-    grafana:
+          - store-project
+    
+      grafana:
         image: grafana/grafana-enterprise
         hostname: grafana
         ports:
-        - 3000:3000
+          - 3000:3000
         environment:
-        - GF_SECURITY_ADMIN_PASSWORD=admin
+          - GF_SECURITY_ADMIN_PASSWORD=admin
         user: "472"
         volumes:
-        - grafana-data:/var/lib/grafana
-        - grafana-provisioning:/etc/grafana/provisioning/datasources
+          - grafana-data:/var/lib/grafana
+          - grafana-provisioning:/etc/grafana/provisioning/datasources
         depends_on:
-        - prometheus
+          - prometheus
         networks:
-        - store-project
-
-    redis:
+          - store-project
+    
+      redis:
         image: redis:latest
         hostname: redis
         ports:
-        - 6379:6379
+          - 6379:6379
         networks:
-        - store-project
-
+          - store-project
+    
     volumes:
-    postgres-data:
-    prometheus-config:
-    grafana-data:
-    grafana-provisioning:
-
+      postgres-data:
+      prometheus-config:
+      grafana-data:
+      grafana-provisioning:
+    
     networks:
-    store-project:
+      store-project:
         driver: bridge
     ```
 
-    Todas as variaveis de ambiente utilizadas estão disponiveis no .env deste repositório, que foi fornecido pelo professor
+## Demonstração
 
+Assista a um vídeo que exemplifica a operação do sistema:
 
-## Exemplo de vídeo
+<div align="center">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/4KQD3JL6HKk" frameborder="0" allowfullscreen></iframe>
+</div>
 
-Video do Projeto
+## Recursos Adicionais
 
-``` { .video }
-https://youtu.be/4KQD3JL6HKk
-```
+Para personalizar e explorar mais funcionalidades, consulte a documentação oficial do MkDocs Material:
+[Documentação MkDocs Material](https://squidfunk.github.io/mkdocs-material/reference/){:target='_blank'}
 
-
-## Template MKDOCS
-
-[Material for MkDocs](https://squidfunk.github.io/mkdocs-material/reference/){:target='_blank'}

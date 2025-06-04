@@ -1,115 +1,128 @@
-## Objetivo
+# Guia Rápido: API de Produtos
 
-Fazer um microserviço de product para nossa api, que interaja com nosso banco de dados e tenha uma dependencia com os objetos utilizados.
+## Sumário
 
-## Montagem do Exercicio
+Este guia apresenta uma nova abordagem para configurar, construir e operar o serviço de produtos. A seguir, você encontrará instruções para o ambiente, configurações Docker e utilização dos endpoints disponíveis.
 
-Para a realizaçao deste exercicio, precisamos primeiro criar nossa aplicação e testa-la, uma vez funcionando adicionamos ao compose da API
+## Configuração Inicial
 
-### Criação Exercicio
+### Preparação da Aplicação
 
-Clone o repositório com o exercicio pronto para ver a estrutura de arquivos escolhida, mas ela segue uma estrutura springboot padrão, diferindo que são dois repositórios. Para testar localmente, use mvn clean install em `product` para rodar o `product-service`.
+Comece clonando o repositório que contém a estrutura base. O projeto possui uma arquitetura em Spring Boot dividida em dois módulos. Para testes locais, navegue até o diretório "product" e execute:
 
+    mvn clean install
 
-### Criação dockerfile
+### Configuração com Docker
 
-Este dockerfile basicamente faz o compilamento e executa o mesmo. É necessario ter o product installado (mvn clean install)
+Após a instalação local, configure o ambiente Docker. Um arquivo Docker é utilizado para compilar e executar o serviço, garantindo que o módulo "product" já esteja instalado.
 
-=== "product pom.xml"
+=== "Arquivo Docker do product-service"
 
-    ``` { .xml .copy .select linenums='1' title="product pom.xml" }
-    --8<-- "https://raw.githubusercontent.com/joaopgs4/product/refs/heads/main/pom.xml"
-    ```
+     ``` { .copy .select linenums='1' title="dockerfile" }
+     --8<-- "https://raw.githubusercontent.com/joaopgs4/product-service/refs/heads/main/Dockerfile"
+     ```
 
-=== "product-service pom.xml"
+### Arquivos de Configuração Maven
 
-    ``` { .xml .copy .select linenums='1' title="product pom.xml" }
-    --8<-- "https://raw.githubusercontent.com/joaopgs4/product-service/refs/heads/main/pom.xml"
-    ```
+Verifique os arquivos de configuração Maven presentes nos dois módulos do projeto:
 
-=== "product-service dockerfile"
+=== "Arquivo pom.xml do product"
 
-    ``` { .copy .select linenums='1' title="dockerfile" }
-    --8<-- "https://raw.githubusercontent.com/joaopgs4/product-service/refs/heads/main/Dockerfile"
-    ```
+     ``` { .xml .copy .select linenums='1' title="product pom.xml" }
+     --8<-- "https://raw.githubusercontent.com/joaopgs4/product/refs/heads/main/pom.xml"
+     ```
 
-### Rotas
-!!! info "POST /product"
+=== "Arquivo pom.xml do product-service"
 
-    Create a new product.
+     ``` { .xml .copy .select linenums='1' title="product pom.xml" }
+     --8<-- "https://raw.githubusercontent.com/joaopgs4/product-service/refs/heads/main/pom.xml"
+     ```
 
-    === "Request"
+## Documentação dos Endpoints
 
-        ``` { .json .copy .select linenums='1' }
-        {
-            "name": "Tomato",
-            "price": 10.12,
-            "unit": "kg"
-        }
-        ```
+A seguir, detalhamos os endpoints disponíveis para interação com o serviço de produtos.
 
-    === "Response"
+!!! info "Cadastrar Produto (POST /product)"
 
-        ``` { .json .copy .select linenums='1' }
-        {
-            "id": "0195abfb-7074-73a9-9d26-b4b9fbaab0a8",
-            "name": "Tomato",
-            "price": 10.12,
-            "unit": "kg"
-        }
-        ```
-        ```bash
-        Response code: 201 (created)
-        ```
+     Utilize este endpoint para inserir um novo produto no sistema.
 
-!!! info "GET /product"
+     === "Exemplo de Requisição"
 
-    Get all products.
-
-    === "Response"
-
-        ``` { .json .copy .select linenums='1' }
-        [
-            {
-                "id": "0195abfb-7074-73a9-9d26-b4b9fbaab0a8",
-                "name": "Tomato",
+          ``` { .json .copy .select linenums='1' }
+          {
+                "name": "Tomate",
                 "price": 10.12,
                 "unit": "kg"
-            },
-            {
-                "id": "0195abfe-e416-7052-be3b-27cdaf12a984",
-                "name": "Cheese",
-                "price": 0.62,
-                "unit": "slice"
-            }
-        ]
-        ```
-        ```bash
-        Response code: 200 (ok)
-        ```
+          }
+          ```
 
-!!! info "GET /product/{id}"
+     === "Exemplo de Resposta"
 
-    Get a product by its ID.
+          ``` { .json .copy .select linenums='1' }
+          {
+                "id": "0195abfb-7074-73a9-9d26-b4b9fbaab0a8",
+                "name": "Tomate",
+                "price": 10.12,
+                "unit": "kg"
+          }
+          ```
+          ```bash
+          Código: 201 (Created)
+          ```
 
-    === "Response"
+!!! info "Listar Produtos (GET /product)"
 
-        ``` { .json .copy .select linenums='1' }
-        {
-            "id": "0195abfb-7074-73a9-9d26-b4b9fbaab0a8",
-            "name": "Tomato",
-            "price": 10.12,
-            "unit": "kg"
-        }
-        ```
-        ```bash
-        Response code: 200 (ok)
-        ```
+     Recupere a lista completa de produtos cadastrados.
 
-!!! info "DELETE /product/{id}"
+     === "Exemplo de Resposta"
 
-    Delete a product by its ID.
+          ``` { .json .copy .select linenums='1' }
+          [
+                {
+                     "id": "0195abfb-7074-73a9-9d26-b4b9fbaab0a8",
+                     "name": "Tomate",
+                     "price": 10.12,
+                     "unit": "kg"
+                },
+                {
+                     "id": "0195abfe-e416-7052-be3b-27cdaf12a984",
+                     "name": "Queijo",
+                     "price": 0.62,
+                     "unit": "fatia"
+                }
+          ]
+          ```
+          ```bash
+          Código: 200 (OK)
+          ```
 
-    ```bash
-    Response code: 204 (no content)
-    ```
+!!! info "Detalhar Produto (GET /product/{id})"
+
+     Consulte informações específicas de um produto usando seu identificador único.
+
+     === "Exemplo de Resposta"
+
+          ``` { .json .copy .select linenums='1' }
+          {
+                "id": "0195abfb-7074-73a9-9d26-b4b9fbaab0a8",
+                "name": "Tomate",
+                "price": 10.12,
+                "unit": "kg"
+          }
+          ```
+          ```bash
+          Código: 200 (OK)
+          ```
+
+!!! info "Remoção de Produto (DELETE /product/{id})"
+
+     Exclua um produto conforme seu identificador. Este endpoint não retorna conteúdo.
+
+     ```bash
+     Código: 204 (No Content)
+     ```
+
+## Conclusão
+
+Esta documentação apresenta uma abordagem alternativa para a configuração e uso da API de produtos. Siga os passos indicados para obter um ambiente adequado para desenvolvimento e testes.
+

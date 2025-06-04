@@ -1,57 +1,66 @@
-# Bottlenecks Aplicados
+# Insights de Performance e Otimização
 
-Este documento descreve as principais soluções de monitoramento e caching implementadas em nossa plataforma para identificar e mitigar gargalos de performance.
-
----
-
-## 1. Monitoramento com Prometheus e Grafana
-
-Para garantir alta disponibilidade e tempo de resposta, utilizamos Prometheus para coletar métricas e Grafana para visualizar dashboards em tempo real. A seguir, estão os manifestos Kubernetes utilizados na implantação desses componentes.
-
-### 1.1. Grafana
-
-- **Objetivo**: Interface gráfica para visualizar métricas coletadas pelo Prometheus, criar alertas e dashboards customizados.
-- **Manifesto Kubernetes**:  
-  [grafana.yaml](https://raw.githubusercontent.com/joaopgs4/api-principal/refs/heads/main/api/k8s/grafana.yaml)
-
-### 1.2. Prometheus
-
-#### 1.2.1. Deployment e Service
-
-- **Objetivo**: Implantar o servidor Prometheus que irá “scrapar” as métricas das aplicações e do cluster.
-- **Manifesto Kubernetes**:  
-  [prometheus.yaml](https://raw.githubusercontent.com/joaopgs4/api-principal/refs/heads/main/api/k8s/prometheus.yaml)
-
-#### 1.2.2. Configuração
-
-- **Objetivo**: Definir targets, regras de scrape e alerting rules para o Prometheus.
-- **Manifesto Kubernetes (ConfigMap)**:  
-  [prometheus-config.yaml](https://raw.githubusercontent.com/joaopgs4/api-principal/refs/heads/main/api/k8s/prometheus-config.yaml)
+Este documento apresenta uma abordagem renovada para análise, cache e monitoramento da nossa aplicação, destacando soluções inovadoras e práticas que otimizam a operação do sistema.
 
 ---
 
-## 2. Caching de Produtos com Redis
+## 1. Estratégia de Caching com Redis
 
-Para reduzir a latência nas requisições à rota `GET /product/{id}`, configuramos um caching em memória usando Redis. Dessa forma, ao buscar um produto por ID, verificamos primeiro o cache antes de consultar o banco de dados, poupando I/O e acelerando a resposta.
+### 1.1. Contexto e Benefícios
 
-- **Objetivo**: Melhorar o tempo de resposta da aplicação de produtos, diminuindo a carga no banco de dados.
-- **Posicionamento**: O Redis roda como um pod isolado no cluster Kubernetes, expondo porta padrão (6379).
+Para melhorar os tempos de resposta das requisições, adotamos uma estratégia de cache com Redis. Essa abordagem garante que as requisições mais comuns sejam processadas com agilidade, reduzindo impactos de latência e carga sobre o banco de dados.
+
+- **Propósito**: Minimizar o tempo de resposta verificando dados em cache antes de acessar os repositórios primários.
+- **Implementação**: O Redis é executado como um container isolado em ambiente Kubernetes, utilizando a porta padrão (6379).
+
+### 1.2. Periferia do Sistema
+
+A integração do cache foi fundamental na diminuição de requisições desnecessárias e na amplificação da capacidade de resposta, impactando positivamente tanto o desempenho quanto a escalabilidade.
+
 - **Manifesto Kubernetes**:  
-  [redis.yaml](https://raw.githubusercontent.com/joaopgs4/api-principal/refs/heads/main/api/k8s/redis.yaml)
+  [redis-config.yaml](https://raw.githubusercontent.com/joaopgs4/api-principal/refs/heads/main/api/k8s/redis.yaml)
 
 ---
 
+## 2. Monitoramento e Visualização em Tempo Real
 
-### Resumo das Melhorias
+### 2.1. Ferramentas e Arquitetura
 
-- **Visibilidade em Tempo Real**: Com Prometheus + Grafana, monitoramos métricas de todas as aplicações (Auth, Account, Product, Gateway, etc.), identificando rapidamente qualquer degradação.
-- **Caching Inteligente**: O uso de Redis no serviço de produtos diminuiu em até 70% o tempo médio de resposta para consultas de produto individual.
-- **Escalabilidade e Resiliência**: Como todos os componentes rodam em Kubernetes, é possível escalar automaticamente (HPA) os pods de Prometheus, Grafana e Redis conforme a demanda aumenta.
+Optamos por um robusto sistema de monitoramento utilizando Prometheus e a visualização de métricas por meio do Grafana. Essa combinação permite uma análise detalhada do ambiente operacional e facilita a identificação de eventuais anomalias.
 
-> **Observação**:  
-> - Mantenha sempre os manifestos de monitoramento e caching versionados no repositório para facilitar auditorias e deploys futuros.  
-> - Ajuste os “resource requests/limits” de acordo com o perfil de uso de cada cluster para evitar “OOMKilled” ou falta de CPU.
+- **Objetivo**: Capturar e exibir métricas essenciais da aplicação para monitoramento contínuo.
+- **Metodologia**: 
+  - O Prometheus recolhe métricas e executa a coleta de dados de múltiplas fontes.
+  - O Grafana transforma esses dados em dashboards dinâmicos.
+
+### 2.2. Componentes e Configurações
+
+#### 2.2.1. Configuração do Grafana
+
+- **Finalidade**: Fornecer interfaces gráficas interativas que auxiliam no monitoramento dos indicadores de performance.
+- **Manifesto Kubernetes**:  
+  [grafana-deploy.yaml](https://raw.githubusercontent.com/joaopgs4/api-principal/refs/heads/main/api/k8s/grafana.yaml)
+
+#### 2.2.2. Implantação do Prometheus
+
+- **Propósito**: Implementar um servidor que realiza a coleta intensiva de métricas das aplicações e do branch operante do cluster.
+- **Manifestos Utilizados**:
+  - [prometheus-deploy.yaml](https://raw.githubusercontent.com/joaopgs4/api-principal/refs/heads/main/api/k8s/prometheus.yaml)
+  - [prometheus-settings.yaml](https://raw.githubusercontent.com/joaopgs4/api-principal/refs/heads/main/api/k8s/prometheus-config.yaml)
+
+---
+
+## 3. Sumário Executivo
+
+- **Visibilidade Continuada**: A integração de Prometheus com Grafana permite uma observação constante das operações, facilitando a tomada de ações corretivas.
+- **Otimização Através do Cache**: O uso do Redis demonstrou ser essencial para reduzir o tempo de resposta em acessos frequentes, resultando em melhorias perceptíveis de desempenho.
+- **Escalabilidade Dinâmica**: A implementação em Kubernetes possibilita ajustes automáticos conforme a demanda, mantendo a robustez do sistema.
+
+> Nota:  
+> - Recomenda-se manter a versão dos manifestos de configuração atualizada e armazenada em repositórios dedicados para futuras auditorias e ajustes de deploy.  
+> - Ajuste os parâmetros de recursos (CPU/memória) conforme o perfil de carga para evitar sobrecargas indesejadas.
 
 ## Conclusão
 
-A implementação dessas soluções de monitoramento e caching é fundamental para garantir a performance e a confiabilidade da nossa plataforma. Com o Prometheus e Grafana, temos visibilidade em tempo real do estado do sistema, enquanto o Redis nos permite responder rapidamente às requisições mais frequentes, melhorando a experiência do usuário final.
+A reformulação das estratégias de cache e monitoramento cria um ambiente resiliente e ágil para suportar demandas variáveis, garantindo a continuidade dos serviços e a melhoria contínua da experiência do usuário.
+
