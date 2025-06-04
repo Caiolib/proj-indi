@@ -1,0 +1,16 @@
+api/.vscode
+api/account
+api/account-service
+api/auth
+api/auth-service
+api/exchange-service
+api/gateway-service
+api/order
+api/order-service
+api/product
+api/product-service
+api/volume
+.venv
+venv
+.cache
+site/
