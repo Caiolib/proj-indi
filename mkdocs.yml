@@ -104,13 +104,14 @@ markdown_extensions:
   - pymdownx.blocks.caption
   - tables
 
+
 plugins:
   - glightbox
   - git-revision-date-localized:
       enable_creation_date: true
   - git-authors
   - git-committers:
-      repository: joaopgs4/joaopgs4.github.com
+      repository: hsandmann/hsandmann.github.com
       branch: main
   - search
   - badges
