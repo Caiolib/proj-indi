@@ -11,7 +11,7 @@ Este guia apresenta uma nova abordagem para configurar, construir e operar o ser
 Comece clonando o repositório que contém a estrutura base. O projeto possui uma arquitetura em Spring Boot dividida em dois módulos. Para testes locais, navegue até o diretório "product" e execute:
 
     mvn clean install
-
+m
 ### Configuração com Docker
 
 Após a instalação local, configure o ambiente Docker. Um arquivo Docker é utilizado para compilar e executar o serviço, garantindo que o módulo "product" já esteja instalado.
